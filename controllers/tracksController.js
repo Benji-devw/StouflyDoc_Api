@@ -1,66 +1,85 @@
 // const fs = require('fs');
-let SoundSchema = require('../models/soundModel');
+let TrackSchema = require('../models/tracksModel');
 
 
 
-exports.getSounds = async (req, res, next) => {
+exports.getTracks = async (req, res, next) => {
 
-    await SoundSchema.find()
+    await TrackSchema.find()
         .then(data => {
             return res.status(200).json({
-                message: "Sounds list from getSounds Done !",
+                message: "Tracks list from getTracks Done !",
                 state: data,
             });
         }).catch(err => next(err))
 }
 
 
-exports.postSound = async (req, res, next) => {
-    // console.log('reqBody.....', req.body)
 
-    const sound = new SoundSchema({ ...req.body });
 
-    await sound.save().then(result => {
-        console.log(result);
+exports.postTrack = async (req, res, next) => {
+    console.log('reqBody.....', req.body)
+
+    // const track = new TrackSchema({ 
+    //     ...req.body,
+    //     url: `${req.protocol}://${req.get('host')}/public/${req.files[i].filename}`
+    // });
+    
+
+    const track = new TrackSchema({...req.body})
+
+    await track.save().then(() => {
+        
         res.status(201).json({
-            message: "Insert sound Done !",
-            state: result
+            message: "Insert Track Done !",
+            
         })
-    }).catch(err => next(err))
+    }).catch(
+        (error) => {
+          res.status(400).json({
+            error: error
+          });
+        }
+      );
 }
 
 
-exports.getSoundById = (req, res, next) => {
 
-    SoundSchema.findOne({_id: req.params.id}, (err, sound) => {
-        if (err) { err => res.status(404).json({ message: "Sounds Not Found", error: err })}
+
+
+exports.getTrackById = (req, res, next) => {
+
+    TrackSchema.findOne({_id: req.params.id}, (err, track) => {
+        if (err) { err => res.status(404).json({ message: "Tracks Not Found", error: err })}
         res.status(200).json({
-            message: "Sounds list from getSoundById Done !",
-            state: sound,
+            message: "Tracks list from gettrackById Done !",
+            state: track,
         })
     })
 }
 
 
-exports.updateSound = (req, res, next) => {
+exports.updateTrack = (req, res, next) => {
 
-    SoundSchema.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+    TrackSchema.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
         .then(() => res.status(200).json({ 
-            message: "Update product Done !",  
+            message: "Update track Done !",  
             state: req.body
         }))
         .catch(err => next(err))
 }
 
 
-exports.deleteSound = async (req, res) => {
+exports.deleteTrack = async (req, res) => {
     // console.log('req', req.params.id)
  
-    await SoundSchema.findOneAndDelete(req.params.id)
+    await TrackSchema.findOneAndDelete(req.params.id)
     .then(res.status(200).json({ message: "Successful" }))
     .catch(err => next(err));
 
 }
+
+
 
 
 
