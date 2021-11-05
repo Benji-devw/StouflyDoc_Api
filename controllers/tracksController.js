@@ -5,7 +5,10 @@ let TrackSchema = require('../models/tracksModel');
 
 exports.getTracks = async (req, res, next) => {
 
-    await TrackSchema.find()
+    // console.log(req.query.category);
+    const cat = req.query.category
+
+    await TrackSchema.find(cat ? {category: req.query.category} : {})
         .then(data => {
             return res.status(200).json({
                 message: "Tracks list from getTracks Done !",
@@ -18,21 +21,19 @@ exports.getTracks = async (req, res, next) => {
 
 
 exports.postTrack = async (req, res, next) => {
-    console.log('reqBody.....', req.body)
+    // console.log('reqBody.....', req.body)
+    // console.log('reqFile.....', req.file)
 
-    // const track = new TrackSchema({ 
-    //     ...req.body,
-    //     url: `${req.protocol}://${req.get('host')}/public/${req.files[i].filename}`
-    // });
-    
-
-    const track = new TrackSchema({...req.body})
+    const track = new TrackSchema({ 
+        ...req.body,
+        // url: `${req.protocol}://${req.get('host')}/public/${req.body.category}/${req.file.filename}`
+        url: `${req.protocol}://${req.get('host')}/public/uploads/${req.file.filename}`
+    });
 
     await track.save().then(() => {
         
         res.status(201).json({
             message: "Insert Track Done !",
-            
         })
     }).catch(
         (error) => {

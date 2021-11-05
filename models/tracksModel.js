@@ -11,9 +11,10 @@ const TrackSchema = new Schema(
         reporter: { type: String},
         tags: {type: String},
         yearCollection: {type: Number},
-        comments: {type: String}
-    },
-    // { date: { type: Date, default: Date.now } },
+        comments: {type: String},
+        datePost:{type:String}
+    }
+    // { date: { type: Date, default: Date.now() } },
     // { timestamps: true },   // Date post
 )
 

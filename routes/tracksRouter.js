@@ -1,25 +1,18 @@
 let express = require('express'),
    router = express.Router(),
+   multerConf = require('../middleware/multer-config'),
    tracksController = require('../controllers/tracksController');
+
 
 // ROUTE Tracks
 router.get("/", tracksController.getTracks);
 router.get("/find/:id", tracksController.getTrackById);
-router.post('/post', tracksController.postTrack);
+
+router.post('/', multerConf, tracksController.postTrack);
+
 router.put('/:id', tracksController.updateTrack);
 router.delete("/:id", tracksController.deleteTrack);
 
-// Filters
-// router.post("/getTrackspost", tracksController.getTracksPost);
 
+module.exports = router;
 
-
-// router.get("/", tracksController.getTrack);
-// router.post("/post", tracksController.postTrack);
-
-
-
-
-
-
-module.exports = router

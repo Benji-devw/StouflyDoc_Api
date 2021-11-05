@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const tracksRouter = require('./routes/tracksRouter');
-
+const cors = require('cors');
+// const bodyParser = require('body-parser')
 
 //Middleware
 app.use(express.json())
@@ -21,11 +22,15 @@ mongoose.connect('mongodb://localhost:27017/stouflydoc', {useNewUrlParser: true,
   });
 
 
+// CORS (système de sécurité) || app.use(cors());
+app.use(cors());
+
 
 // ROUTE
 app.use('/tracks', tracksRouter)
 
-
+app.use('/public', express.static('public'))
+// app.use('/public', express.static(__dirname + 'public'));
 
 
 app.listen(8080, () => {
