@@ -6,12 +6,15 @@ const TrackSchema = new Schema(
     {
         url:{type: String},
         title: { type: String },
+        tempo: {type: Number},
         category: { type: String},
         description: { type: String},
         reporter: { type: String},
         tags: {type: String},
         yearCollection: {type: Number},
         comments: {type: String},
+        price: {type: Number},
+        likes: {type: Number},
         datePost:{type:String}
     }
     // { date: { type: Date, default: Date.now() } },

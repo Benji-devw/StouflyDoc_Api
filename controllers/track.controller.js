@@ -1,50 +1,35 @@
 // const fs = require('fs');
-let TrackSchema = require('../models/tracksModel');
+const TrackSchema = require('../models/track.model');
 
 
 
 exports.getTracks = async (req, res, next) => {
 
-    // console.log(req.query.category);
+    console.log(req.query);
+    const limit = parseInt(req.query._limit)
     const cat = req.query.category
 
     await TrackSchema.find(cat ? {category: req.query.category} : {})
+        // .sort({ length: -1 })
+        // .limit(limit > 1 ? limit : 4)
         .then(data => {
             return res.status(200).json({
-                message: "Tracks list from getTracks Done !",
-                state: data,
+                message: "Tacks found !",
+                state: data
             });
-        }).catch(err => next(err))
-}
-
-
-
-
-exports.postTrack = async (req, res, next) => {
-    // console.log('reqBody.....', req.body)
-    // console.log('reqFile.....', req.file)
-
-    const track = new TrackSchema({ 
-        ...req.body,
-        // url: `${req.protocol}://${req.get('host')}/public/${req.body.category}/${req.file.filename}`
-        url: `${req.protocol}://${req.get('host')}/public/uploads/${req.file.filename}`
-    });
-
-    await track.save().then(() => {
-        
-        res.status(201).json({
-            message: "Insert Track Done !",
         })
-    }).catch(
-        (error) => {
-          res.status(400).json({
-            error: error
-          });
-        }
-      );
+        .catch(err => next(err))
 }
-
-
+exports.getAlltracks = async (req, res, next) => {
+    await TrackSchema.find()
+        .then(data => {
+            return res.status(200).json({
+                message: "Tracks found !",
+                state: data
+            });
+        })
+        .catch(err => next(err))
+}
 
 
 
@@ -53,11 +38,38 @@ exports.getTrackById = (req, res, next) => {
     TrackSchema.findOne({_id: req.params.id}, (err, track) => {
         if (err) { err => res.status(404).json({ message: "Tracks Not Found", error: err })}
         res.status(200).json({
-            message: "Tracks list from gettrackById Done !",
+            message: "Tracks find !",
             state: track,
         })
     })
 }
+
+
+
+exports.postTrack = async (req, res, next) => {
+    console.log('reqBody.....', req.body)
+    console.log('reqFile.....', req.file)
+
+    const track = new TrackSchema({ 
+        ...req.body,
+        // url: `${req.protocol}://${req.get('host')}/public/${req.body.category}/${req.file.filename}`
+        url: `${req.protocol}://${req.get('host')}/public/uploads/${req.file.filename}`
+    });
+
+    // await track.save().then(() => {
+    //     res.status(201).json({
+    //         message: "Insert Track Done !",
+    //     })
+    // }).catch(
+    //     (error) => {
+    //       res.status(400).json({
+    //         error: error
+    //       });
+    //     }
+    //   );
+}
+
+
 
 
 exports.updateTrack = (req, res, next) => {
