@@ -2,16 +2,36 @@
 const TrackSchema = require('../models/track.model');
 
 
-
+/********/
+/** GET TRACKS WITH QUERY */
 exports.getTracks = async (req, res, next) => {
 
-    console.log(req.query);
-    const limit = parseInt(req.query._limit)
-    const cat = req.query.category
+  const bpmMin = req.query.BpmMin
+  const bpmMax = req.query.BpmMax
+  const search = req.query.search || ""
+  const cat = req.query.category || ""
+  const tag = req.query.tag || ""
+  const page = parseInt(req.query.page)
 
-    await TrackSchema.find(cat ? {category: req.query.category} : {})
-        // .sort({ length: -1 })
-        // .limit(limit > 1 ? limit : 4)
+    queryFilters =  {
+      $or: [
+        { title:    { $regex: search, $options: 'i' } },
+        { tags:     { $regex: search, $options: 'i' } },
+        { reporter: { $regex: search, $options: 'i' } }
+      ], 
+      $and: [
+        { $or: [{ bpm: { $gte : req.query.BpmMin !== undefined ? bpmMin : 0 }}] },
+        { $or: [{ bpm: { $lte: req.query.BpmMax !== undefined ? bpmMax : 200 }}] },
+        { $or: [{ category: { $regex: cat, $options: 'i' }}] },
+        { $or: [{ tags: { $regex: tag, $options: 'i' }}] }
+      ]
+    }
+    
+    console.log(req.query);
+
+    await TrackSchema.find(queryFilters)
+    // .limit(page ? page : 15)
+      // .sort(req.query.BpmMin ? { bpm: {$lt: parseFloat(req.query.BpmMin)}} : {})
         .then(data => {
             return res.status(200).json({
                 message: "Tacks found !",
@@ -20,6 +40,9 @@ exports.getTracks = async (req, res, next) => {
         })
         .catch(err => next(err))
 }
+
+/********/
+/** GET ALL TRACKS FOR MAP CAT TAG ...  */
 exports.getAlltracks = async (req, res, next) => {
     await TrackSchema.find()
         .then(data => {
@@ -30,7 +53,6 @@ exports.getAlltracks = async (req, res, next) => {
         })
         .catch(err => next(err))
 }
-
 
 
 exports.getTrackById = (req, res, next) => {
@@ -44,11 +66,11 @@ exports.getTrackById = (req, res, next) => {
     })
 }
 
-
-
+/********/
+/** POST TRACKS */
 exports.postTrack = async (req, res, next) => {
-    console.log('reqBody.....', req.body)
-    console.log('reqFile.....', req.file)
+    // console.log('reqBody.....', req.body)
+    // console.log('reqFile.....', req.file)
 
     const track = new TrackSchema({ 
         ...req.body,
@@ -69,9 +91,8 @@ exports.postTrack = async (req, res, next) => {
     //   );
 }
 
-
-
-
+/********/
+/** UPDATE TRACK */
 exports.updateTrack = (req, res, next) => {
 
     TrackSchema.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
@@ -82,7 +103,8 @@ exports.updateTrack = (req, res, next) => {
         .catch(err => next(err))
 }
 
-
+/********/
+/** DELETE TRACK */
 exports.deleteTrack = async (req, res) => {
     // console.log('req', req.params.id)
  
@@ -91,72 +113,3 @@ exports.deleteTrack = async (req, res) => {
     .catch(err => next(err));
 
 }
-
-
-
-
-
-
-// exports.getProductsPost = async (req, res) => {
-//     // console.log('req.body', req.body.filters)
-
-//     let findArgs = {};
-//     const sortValue = []
-
-//     for (let key in req.body.filters) {
-//         if (req.body.filters[key].length > 0) {
-//             findArgs[key] = req.body.filters[key];
-//         }
-//     }
-
-//     if (req.body.filters.promotionProduct === true) {
-//         sortValue.push('byPromo')
-//     }
-//     else if (req.body.filters.novelty === true) {
-//         sortValue.push('byNovelty')
-//     }
-//     else if (req.body.filters.price === true) {
-//         sortValue.push('byDesc')
-//     }
-//     else if (req.body.filters.price === false) {
-//         sortValue.push('byAsc')
-//     }
-
-//     function sorting() {
-//         switch (sortValue[0]) {
-//             case 'byPromo':
-//                 return { promotionProduct: -1 }
-//                 break;
-//             case 'byNovelty':
-//                 return { novelty: -1 }
-//                 break;
-//             case 'byDesc':
-//                 return { priceProduct: -1 }
-//                 break;
-//             case 'byAsc':
-//                 return { priceProduct: 1 }
-//                 break;
-//             default:
-//                 break;
-//         }
-//     }
-
-//     // console.log('TESTSESTESTE');
-//     // console.log('sortValue', sortValue);
-//     // console.log('findArgs', findArgs)
-//     Product.find(findArgs)
-//         .sort(sorting())
-
-//         .then(data => {
-//             return res.status(200).json({
-//                 message: findArgs,
-//                 products: data
-//             });
-//         })
-//         .catch(err => console.log('Get products error :', err))
-// }
-
-
-
-
-

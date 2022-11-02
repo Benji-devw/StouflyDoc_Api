@@ -104,14 +104,14 @@ exports.login = async (req, res) => {
 
 exports.getUser = async (req, res) => {
     console.log(req.body);
-//     UserSchema.find({}, function (err, users) {
-//         // console.log('users', users)
-//         if (err){
-//              return res.status(401).json({
-//              success: false, 
-//              error: 'Users Not found'
-//         })}
+    UserSchema.find({}, function (err, users) {
+        // console.log('users', users)
+        if (err){
+             return res.status(401).json({
+             success: false, 
+             error: 'Users Not found'
+        })}
 
-//         return res.status(200).send({ success: true, data: users })
-//    });
+        return res.status(200).send({ success: true, data: users })
+   });
 }
