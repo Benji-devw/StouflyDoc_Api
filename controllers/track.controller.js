@@ -6,12 +6,13 @@ const TrackSchema = require('../models/track.model');
 /** GET TRACKS WITH QUERY */
 exports.getTracks = async (req, res, next) => {
 
-  const bpmMin = req.query.BpmMin
-  const bpmMax = req.query.BpmMax
+  const bpmMin = Number(req.query.BpmMin)
+  const bpmMax = Number(req.query.BpmMax)
   const search = req.query.search || ""
   const cat = req.query.category || ""
   const tag = req.query.tag || ""
-  const page = parseInt(req.query.page)
+  const skip = Number(req.query.skip)
+  // const skip = req.query.skip && /^\d+$/.skip(req.query.skip) ? Number(req.query.skip) : 0
 
     queryFilters =  {
       $or: [
@@ -27,10 +28,11 @@ exports.getTracks = async (req, res, next) => {
       ]
     }
     
+    
     console.log(req.query);
 
     await TrackSchema.find(queryFilters)
-    // .limit(page ? page : 15)
+    .limit(req.query.skip ? skip : 15 )
       // .sort(req.query.BpmMin ? { bpm: {$lt: parseFloat(req.query.BpmMin)}} : {})
         .then(data => {
             return res.status(200).json({

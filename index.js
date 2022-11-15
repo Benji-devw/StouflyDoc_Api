@@ -5,7 +5,7 @@ const express = require('express');
   userRouter = require('./routes/user.router'),
   cors = require('cors');
 
-
+console.log(app);
 //Middleware
 app.use(express.json())
 app.use(function(req, res, next) {
