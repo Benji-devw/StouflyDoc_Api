@@ -29,10 +29,10 @@ exports.getTracks = async (req, res, next) => {
     }
     
     
-    console.log(req.query);
+    // console.log(req.query);
 
     await TrackSchema.find(queryFilters)
-    .limit(req.query.skip ? skip : 15 )
+    // .limit(req.query.skip ? skip : 9 )
       // .sort(req.query.BpmMin ? { bpm: {$lt: parseFloat(req.query.BpmMin)}} : {})
         .then(data => {
             return res.status(200).json({

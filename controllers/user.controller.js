@@ -56,7 +56,7 @@ exports.register = async (req, res) => {
 
 
 exports.login = async (req, res) => {
-    console.log('reqBody.....', req.body)
+    // console.log('reqBody.....', req.body)
     const { email, password, status } = req.body;
 
 
@@ -103,7 +103,7 @@ exports.login = async (req, res) => {
 
 
 exports.getUser = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     UserSchema.find({}, function (err, users) {
         // console.log('users', users)
         if (err){
