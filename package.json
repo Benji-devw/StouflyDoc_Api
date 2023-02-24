@@ -22,5 +22,8 @@
     "nodemon": "^2.0.20",
     "password-hash": "^1.2.2",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@vercel/node": "^2.9.8"
   }
 }

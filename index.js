@@ -1,5 +1,5 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
-require ("dotenv").config({path: "./config/config.env"});
+require ("dotenv").config({path: "./config.env"});
 const express = require('express');
   app = express(),
   mongoose = require('mongoose'),
