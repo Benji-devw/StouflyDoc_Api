@@ -1,22 +1,18 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { ServerApiVersion } = require('mongodb');
 require ("dotenv").config({path: "./.env.local"});
 const express = require('express');
   app = express(),
   mongoose = require('mongoose'),
-  trackRouter = require('./routes/track.router'),
+  trackRouter = require('./routes/track.router');
   // userRouter = require('./routes/user.router'),
+const cors = require('cors');
 
-// CORS (système de sécurité) || app.use(cors());
-// app.use(cors({
-//   origin: '*',
-//   methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
-// }));
 
   
 //Middleware
 app.use(express.json())
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "mon-domaine.fr"),
+  res.header("Access-Control-Allow-Origin", "*"),
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"),
   next()
 });
@@ -38,6 +34,8 @@ db.once('open', function() {
   console.log("Connexion à la base de données établie avec succès !");
 });
 
+
+app.use(cors());
 
 
 // ROUTE
