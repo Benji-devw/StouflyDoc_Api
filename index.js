@@ -5,9 +5,12 @@ const express = require('express');
   mongoose = require('mongoose'),
   trackRouter = require('./routes/track.router'),
   // userRouter = require('./routes/user.router'),
-  cors = require('cors');
 
-
+// CORS (système de sécurité) || app.use(cors());
+// app.use(cors({
+//   origin: '*',
+//   methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+// }));
 
   
 //Middleware
@@ -21,7 +24,7 @@ app.use(function(req, res, next) {
 
 
 // MongoDB
-// mongoose.connect('mongodb://127.0.0.1/stouflydoc', { 
+// mongoose.connect('http://localhost:8080/stouflydoc', { 
 //   useNewUrlParser: true, 
 //   useUnifiedTopology: true 
 // });
@@ -35,8 +38,6 @@ db.once('open', function() {
   console.log("Connexion à la base de données établie avec succès !");
 });
 
-// CORS (système de sécurité) || app.use(cors());
-app.use(cors());
 
 
 // ROUTE
