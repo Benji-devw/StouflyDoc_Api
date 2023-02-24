@@ -1,20 +1,19 @@
 const express = require('express'),
-  router = express.Router(),
-  multerConf = require('../middleware/multer-config'),
-  trackController = require('../controllers/track.controller');
-const cors = require('cors');
+   router = express.Router(),
+   multerConf = require('../middleware/multer-config'),
+   trackController = require('../controllers/track.controller');
 
 
 // ROUTE Tracks
-router.get("/", cors(), trackController.getTracks);
-router.get("/all", cors(), trackController.getAlltracks);
-router.get("/find/:id", cors(), trackController.getTrackById);
+router.get("/", trackController.getTracks);
+router.get("/all", trackController.getAlltracks);
+router.get("/find/:id", trackController.getTrackById);
 
-router.post('/', cors(), multerConf, trackController.postTrack);
+router.post('/', multerConf, trackController.postTrack);
 // router.post('/', trackController.postTrack);
 
-router.put('/:id', cors(), trackController.updateTrack);
-router.delete("/:id", cors(), trackController.deleteTrack);
+router.put('/:id', trackController.updateTrack);
+router.delete("/:id", trackController.deleteTrack);
 
 
 module.exports = router;
