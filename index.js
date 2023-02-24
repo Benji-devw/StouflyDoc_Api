@@ -1,10 +1,10 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
-require ("dotenv").config({path: "./config.env"});
+require ("dotenv").config({path: "./.env.local"});
 const express = require('express');
   app = express(),
   mongoose = require('mongoose'),
   trackRouter = require('./routes/track.router'),
-  userRouter = require('./routes/user.router'),
+  // userRouter = require('./routes/user.router'),
   cors = require('cors');
 
 
