@@ -25,7 +25,7 @@ app.use(function(req, res, next) {
 //   useNewUrlParser: true, 
 //   useUnifiedTopology: true 
 // });
-mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
+mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
   .then (() => console.log("connection to db established..."))
   .catch(() => console.log("connection to db failed..."))
 
