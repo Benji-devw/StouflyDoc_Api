@@ -21,10 +21,10 @@ app.use(function(req, res, next) {
 
 // MongoDB
 mongoose.set('strictQuery', true);
-mongoose.connect('mongodb://0.0.0.0:27017/stouflydoc', {useNewUrlParser: true, useUnifiedTopology: true});
-// mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
-//   .then (() => console.log("connection to db established..."))
-//   .catch(() => console.log("connection to db failed..."))
+// mongoose.connect('mongodb://0.0.0.0:27017/stouflydoc', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
+  .then (() => console.log("connection to db established..."))
+  .catch(() => console.log("connection to db failed..."))
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Erreur de connexion : '));
