@@ -8,7 +8,6 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path')
 
-
 //Middleware
 app.use(express.json())
 app.use(function(req, res, next) {
@@ -17,14 +16,32 @@ app.use(function(req, res, next) {
   next()
 });
 
-
+// Ajoute cette ligne pour éviter l'avertissement de strictQuery
+mongoose.set('strictQuery', false);
 
 // MongoDB
-mongoose.set('strictQuery', true);
-// mongoose.connect('mongodb://0.0.0.0:27017/stouflydoc', {useNewUrlParser: true, useUnifiedTopology: true});
-mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
-  .then (() => console.log("connection to db established..."))
-  .catch(() => console.log("connection to db failed..."))
+const connectDB = async () => {
+  try {
+    // Utilise la bonne chaîne de connexion
+    const connectionString = process.env.ENV === 'dev' 
+      ? 'mongodb://localhost:27017/stouflydoc' 
+      : process.env.DB_URI;
+    
+    console.log('Tentative de connexion à:', connectionString);
+    
+    await mongoose.connect(connectionString, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverApi: ServerApiVersion.v1
+    });
+    console.log('✅ Connecté à MongoDB');
+  } catch (err) {
+    console.error('❌ Erreur MongoDB:', err);
+    process.exit(1);
+  }
+};
+
+connectDB();
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Erreur de connexion : '));
@@ -43,7 +60,7 @@ app.use('/tracks', trackRouter);
 // app.use('/public', express.static('public'));
 app.use('/public', express.static(path.join(__dirname, 'public')))
 
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 3011;
 app.listen(PORT, () => {
-  console.log(`Server listening on port : ${PORT}`);
-})
+  console.log(`✅ Server listening on port: ${PORT}`);
+});
