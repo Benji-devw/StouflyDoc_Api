@@ -19,6 +19,29 @@ stoufly-doc_api/
 ├── public/           # Fichiers statiques (uploads)
 ├── routes/           # Définition des routes
 └── index.js          # Point d'entrée de l'application
+
+┌─────────────────┐      ┌──────────────────┐
+│   MONGODB Atlas │      │  Cloudflare R2   │
+│   (Le cerveau)  │      │  (L'entrepôt)    │
+│                 │      │                  │
+│ • Titre         │      │ • Fichier .wav   │
+│ • BPM           │      │ • Fichier .mp3   │
+│ • Tags          │      │ • Images         │
+│ • URL R2 ───────┼──────┼→ Emplacement     │
+└─────────────────┘      └──────────────────┘
+         ▲                         ▲
+         │                         │
+    Donne les méta             Livre le fichier
+         │                         │
+         └──────────┬──────────────┘
+                    ▼
+         ┌──────────────────┐
+         │   FRONTEND Vercel │
+         │   (La vitrine)    │
+         │                   │
+         │ Affiche tout et   │
+         │ joue le son       │
+         └──────────────────┘
 ```
 
 ## Routes

@@ -3,8 +3,8 @@ require ("dotenv").config({path: "./.env.local"});
 const express = require('express');
   app = express(),
   mongoose = require('mongoose'),
-  trackRouter = require('./routes/track.router');
-  // userRouter = require('./routes/user.router'),
+  trackRouter = require('./routes/track.router'),
+  userRouter = require('./routes/user.router');
 const cors = require('cors');
 const path = require('path')
 
@@ -55,7 +55,7 @@ app.use(cors());
 
 // ROUTE
 app.use('/tracks', trackRouter);
-// app.use('/user', userRouter);
+app.use('/auth', userRouter);
 
 // app.use('/public', express.static('public'));
 app.use('/public', express.static(path.join(__dirname, 'public')))
