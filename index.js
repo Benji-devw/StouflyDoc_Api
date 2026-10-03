@@ -1,13 +1,5 @@
 const { ServerApiVersion } = require("mongodb");
 require("dotenv").config({ path: "./.env.local" });
-console.log("=== DEBUG ENV ===");
-console.log("ENV:", process.env.ENV);
-console.log("DB_URI present:", !!process.env.DB_URI);
-console.log(
-  "DB_URI starts with mongodb+srv:",
-  process.env.DB_URI?.startsWith("mongodb+srv"),
-);
-console.log("=================");
 const express = require("express");
 ((app = express()),
   (mongoose = require("mongoose")),
@@ -38,8 +30,6 @@ const connectDB = async () => {
       process.env.ENV === "dev"
         ? "mongodb://localhost:27017/stouflydoc"
         : process.env.DB_URI;
-
-    console.log("Tentative de connexion à:", connectionString);
 
     await mongoose.connect(connectionString, {
       useNewUrlParser: true,
